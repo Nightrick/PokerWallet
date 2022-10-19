@@ -1,0 +1,120 @@
+package personalProject.personalProjectAPI.Controllers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import personalProject.personalProjectAPI.Models.User;
+import personalProject.personalProjectAPI.Repositories.UserRepository;
+
+@RestController
+public class UserController {
+	
+	@Autowired
+	private UserRepository userRepo;
+	
+	//reset
+	@GetMapping("/resetusers")
+	public String resetUsers() {
+		userRepo.deleteAll();
+		return "Users reset";
+	}
+	
+	//(C) RUD - Generate test users
+	@PostMapping("/createtestusers")
+	@ResponseStatus(HttpStatus.CREATED)
+	public List<User> saveTestUsers(){
+		
+		List<User> testUsers = new ArrayList<>(5);
+		
+		User user1 = new User("Dave", "Chip", 100.00, 15.00);
+		testUsers.add(user1);
+		User user2 = new User("Linda", "AceHigh", 500.00, 350.00);
+		testUsers.add(user2);
+		User user3 = new User("Chris", "KingofHearts", 58.00, 8.00);
+		testUsers.add(user3);
+		User user4 = new User("Richard", "CallKid", 217.00, 117.00);
+		testUsers.add(user4);
+		User user5 = new User("Caitlyn", "QueenofHearts", 55.59, 5.59);
+		testUsers.add(user5);
+				
+		userRepo.insert(user1);
+		userRepo.insert(user2);
+		userRepo.insert(user3);
+		userRepo.insert(user4);
+		userRepo.insert(user5);
+		
+		return testUsers;
+	}
+	
+	//C (R) UD
+	@GetMapping("/findByUsername/{username}")
+	public User findByUsername(@PathVariable("username") String username) {
+		return userRepo.findByUsername(username);
+	}
+	
+	//C (R) UD
+	@GetMapping("/findAllUsers")
+	public List<User> findAllUsers(){
+		return userRepo.findAll();
+	}
+	
+	//CR (U) D
+	@PutMapping("/saveUser")
+	public User save(@RequestBody User user) {
+		return userRepo.save(user);
+	}
+	
+	//CR (U) D
+	@PutMapping("/findAndPushToUserBankrollByUsername/{username}")
+	public void findAndPushToUserBankrollByUsername(@PathVariable("username") String username, @RequestBody double bankroll) {
+		userRepo.findAndPushToUserBankrollByUsername(username, bankroll);
+	}
+	
+	//CR (U) D
+	@PutMapping("findAndPushToUserNetProfitByUsername/{username}")
+	public void findAndPushToUserNetProfitByUsername(@PathVariable("username") String username, @RequestBody double netProfit) {
+		userRepo.findAndPushToUserNetProfitByUsername(username, netProfit);
+	}
+	
+	//C (R) UD
+	@GetMapping("/users/{id}")
+	public User oneUser(@PathVariable("id") String id) {
+		return userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+	}
+	
+	@ResponseBody
+	@ExceptionHandler(UserNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String userNotFoundHandler(UserNotFoundException ex) {
+		return ex.getMessage();
+	}
+	
+	//CR (U) D
+	@PutMapping("/createuser/{id}")
+	public User updateUserByID(@RequestBody User user, @PathVariable("id") String id) {
+		user.setId(id);
+		return userRepo.save(user);
+	}
+	
+	//CRU (D)
+	@DeleteMapping("/deleteuser/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteUser(@PathVariable("id") String id) {
+		userRepo.deleteById(id);
+	}
+	
+}
