@@ -1,0 +1,5 @@
+package personalProject.personalProjectClient.Service;
+
+public class UserService {
+
+}

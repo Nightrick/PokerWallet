@@ -1,0 +1,14 @@
+package personalProject.personalProjectClient.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import personalProject.personalProjectClient.Service.UserService;
+
+@Controller
+public class PokerWalletController {
+	
+	@Autowired
+	private UserService userService;
+
+}

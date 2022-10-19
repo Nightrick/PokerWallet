@@ -10,5 +10,24 @@
 </head>
 <body>
 
+<div>
+	<table id="userList">
+		<tr>
+			<th>Username</th>
+			<th>Bankroll</th>
+			<th>Net-Profit</th>
+		</tr>
+	<c:forEach var="user" items="${users}">
+			<tr>
+				<td>${user.username}</td>
+				<td>${user.bankroll}</td>
+				<td>${user.netProfit}</td>
+				<td>
+				</td>
+			</tr>
+	</c:forEach>
+	</table>
+</div>
+	
 </body>
 </html>
