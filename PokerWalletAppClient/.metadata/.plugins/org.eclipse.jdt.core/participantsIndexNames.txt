@@ -1,0 +1,3 @@
+INDEX VERSION 1.131
+C:\Users\Dj\Desktop\Personal Coding Project\PokerWallet\PokerWalletAppClient\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\740389260.index
+\personalProjectClient\src\main\java
