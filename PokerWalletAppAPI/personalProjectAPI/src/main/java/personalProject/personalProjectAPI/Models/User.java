@@ -10,6 +10,7 @@ public class User {
 	private String id;
 	private String username;
 	private String password;
+	private String email;
 	private double bankroll;
 	private double netProfit;
 	
@@ -17,10 +18,11 @@ public class User {
 		
 	}
 	
-	public User(String username, String password, double bankroll, double netProfit) {
+	public User(String username, String password, String email, double bankroll, double netProfit) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.email = email;
 		this.bankroll = bankroll;
 		this.netProfit = netProfit;
 	}
@@ -46,6 +48,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public double getBankroll() {

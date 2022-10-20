@@ -40,15 +40,15 @@ public class UserController {
 		
 		List<User> testUsers = new ArrayList<>(5);
 		
-		User user1 = new User("Dave", "Chip", 100.00, 15.00);
+		User user1 = new User("Dave", "Chip", "Dave@gmail.com", 100.00, 15.00);
 		testUsers.add(user1);
-		User user2 = new User("Linda", "AceHigh", 500.00, 350.00);
+		User user2 = new User("Linda", "AceHigh", "Linda@gmail.com", 500.00, 350.00);
 		testUsers.add(user2);
-		User user3 = new User("Chris", "KingofHearts", 58.00, 8.00);
+		User user3 = new User("Chris", "KingofHearts", "Chris@gmail.com", 58.00, 8.00);
 		testUsers.add(user3);
-		User user4 = new User("Richard", "CallKid", 217.00, 117.00);
+		User user4 = new User("Richard", "CallKid", "Richard@gmail.com", 217.00, 117.00);
 		testUsers.add(user4);
-		User user5 = new User("Caitlyn", "QueenofHearts", 55.59, 5.59);
+		User user5 = new User("Caitlyn", "QueenofHearts", "Richard@gmail.com", 55.59, 5.59);
 		testUsers.add(user5);
 				
 		userRepo.insert(user1);

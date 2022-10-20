@@ -31,5 +31,10 @@ public class UserService {
 		return result;
 	}
 	
+	public void createUser(UserResponse user) {
+		String url = baseUrl + "/createUser";
+		restTemplate.postForObject(url, user, UserResponse.class);
+	}
+	
 
 }

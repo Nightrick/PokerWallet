@@ -6,10 +6,35 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>PokerWallet.com</title>
+<link rel="stylesheet" href = "/style.css" />
 </head>
 <body>
-
+<div class="header">    
+  <div class="loginButtons">
+	<c:if test="${not loggedIn}">
+		<div class="loginButtons">
+			<a href="/login">Login</a>
+  			<a href="/signup">Sign Up</a>
+		</div>
+	</c:if>
+	<c:if test="${loggedIn}">
+		<a>Welcome back, ${username}!</a><br>
+		<a>Current Bankroll: ${bankroll}</a><br>
+		<a href="/signout">Sign Out</a>
+	</c:if>
+   </div>
+	<h1> Welcome to PokerWallet!</h1>
+  <div class="topnav">
+  	<a class="active" href="/">Home</a>
+  	<a href="/">Bankroll Statistics</a>
+  	<a href="/">Poker Stats</a>
+  	<a href="/">Training Grounds</a>
+  	<a href="/">Refer-a-Friend</a>
+  	<a href="/">Contact Us</a>  
+  </div>
+</div>
+<!--  
 <div>
 	<table id="userList">
 		<tr>
@@ -28,6 +53,6 @@
 	</c:forEach>
 	</table>
 </div>
-	
+-->
 </body>
 </html>
