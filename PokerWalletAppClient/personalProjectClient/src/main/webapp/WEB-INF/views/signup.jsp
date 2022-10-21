@@ -21,7 +21,11 @@
 	<c:if test="${loggedIn}">
 		<a>Welcome back, ${username}!</a><br>
 		<a>Current Bankroll: ${bankroll}</a><br>
-		<a href="/signout">Sign Out</a>
+		<form action="/signout" method="POST" class="signout">
+			<input type="hidden" name="username" value="${username}" /> 
+			<input type="hidden" name="loggedIn" value="${loggedIn}" />
+			<button type="submit">Sign Out</button>
+		</form>
 	</c:if>
    </div>
 	<h1>Signup!</h1>
@@ -29,7 +33,7 @@
   	<a class="active" href="/">Home</a>
   	<a href="/">Bankroll Statistics</a>
   	<a href="/">Poker Stats</a>
-  	<a href="/">Training Grounds</a>
+  	<a href="/">Manage Bankroll</a>
   	<a href="/">Refer-a-Friend</a>
   	<a href="/">Contact Us</a>  
   </div>

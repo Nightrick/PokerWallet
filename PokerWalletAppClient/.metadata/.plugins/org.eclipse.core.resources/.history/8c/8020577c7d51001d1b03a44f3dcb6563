@@ -1,0 +1,127 @@
+package personalProject.personalProjectClient.Controller;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import personalProject.personalProjectClient.Models.UserResponse;
+import personalProject.personalProjectClient.Service.UserService;
+
+@Controller
+public class PokerWalletController {
+	
+	@Autowired
+	private UserService userService;
+	
+	@RequestMapping("/")
+	public String homePage(@RequestParam(required = false) String message, @RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false, defaultValue = "0") double bankroll, Model model) {
+		
+		model.addAttribute("message", message);
+		model.addAttribute("username", username);
+		model.addAttribute("bankroll", bankroll);
+		model.addAttribute("loggedIn", loggedIn);
+		
+		return "Home";
+	}
+	
+	//Needs work
+	@RequestMapping("/login")
+	public String loginPage(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false, defaultValue = "0") double bankroll, Model model) {
+		
+		String message = "Please enter your username and password.";
+		model.addAttribute("message", message);
+		model.addAttribute("username", username);
+		model.addAttribute("bankroll", bankroll);
+		model.addAttribute("loggedIn", loggedIn);
+		
+		return "login";
+	}
+	
+	@PostMapping("/login")
+	public String loginUser(@RequestParam String username, @RequestParam String password, Model model) {
+		
+		ArrayList<UserResponse> allUsers = userService.findAllUsers();
+		
+		for (UserResponse user : allUsers) {
+			
+			if (user.getUsername().equals(username)) {
+				System.out.println("\n username = username");
+				if (user.getPassword().equals(hashPassword(password))) {
+					System.out.println("\n password = password");
+					boolean loggedIn = true;
+					model.addAttribute("loggedIn", loggedIn);
+					model.addAttribute("username", username);
+					model.addAttribute("message", "Welcome back, " + username + "!");
+					return "Home";
+				} else {
+					System.out.println("\n password != password");
+					model.addAttribute("message", "That password was incorrect.");
+					model.addAttribute("loggedIn", false);
+					return "login";
+				}
+			}
+		}
+		model.addAttribute("message", "That username/password combo does not exist.");
+		model.addAttribute("loggedIn", false);
+		return "login";
+	}
+	
+	//Needs work
+	@RequestMapping("/signup")
+	public String signupPage(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false, defaultValue = "0") double bankroll, Model model) {
+		
+		model.addAttribute("username", username);
+		model.addAttribute("loggedIn", loggedIn);
+		
+		return "signup";
+	}
+	
+	@PostMapping("/signup")
+	public String newUserSignUp(@RequestParam String username, @RequestParam String email, @RequestParam String password, Model model) {
+		
+		ArrayList<UserResponse> allUsers = userService.findAllUsers();
+		for (UserResponse user : allUsers) {
+			if (user.getUsername().equals(username)) {
+				model.addAttribute("message", "That username exists already. Login instead?");
+				return "login";
+			}
+		}
+		if (username.equalsIgnoreCase("Anonymous") || username.equalsIgnoreCase("null") || username.equals("")) {
+			model.addAttribute("message", "That username is not permitted.");
+			return "signup";
+		} else {
+			UserResponse user = new UserResponse(username, hashPassword(password), email, 0.00, 0.00);
+			userService.createUser(user);
+			model.addAttribute("message", "Welcome, " + username + "!");
+			model.addAttribute("username", username);
+			model.addAttribute("loggedIn", true);
+			return "Home";
+		}
+	}
+	
+	@RequestMapping("/signout")
+	public String userSignout(@RequestParam String username, @RequestParam boolean loggedIn, Model model) {
+		model.addAttribute("loggedIn", false);
+		model.addAttribute("message", "Come back soon, " + username + "!");
+		return "Home";
+	}
+	
+	public static String hashPassword(String password) {
+		String result = "";
+		int mult = (password.length() * password.length()) % 126;
+		for (int i = password.length() - 1; i >= 0; i--) {
+			int num = (int)password.charAt(i);
+			num = num + mult;
+			
+			result += (char)num;
+			mult += 4;
+		}
+		return result;
+	}
+}

@@ -60,6 +60,10 @@ public class UserResponse {
 	public void setBankroll(double bankroll) {
 		this.bankroll = bankroll;
 	}
+	
+	public String displayBankroll(double bankroll) { 
+		return "$" + String.format("%.2f", bankroll);
+	}
 
 	public double getNetProfit() {
 		return netProfit;
@@ -67,5 +71,9 @@ public class UserResponse {
 
 	public void setNetProfit(double netProfit) {
 		this.netProfit = netProfit;
+	}
+	
+	public String displayNetProfit(double netprofit) { 
+		return "$" + String.format("%.2f", netprofit);
 	}
 }

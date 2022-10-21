@@ -57,6 +57,7 @@ public class PokerWalletController {
 					boolean loggedIn = true;
 					model.addAttribute("loggedIn", loggedIn);
 					model.addAttribute("username", username);
+					model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
 					model.addAttribute("message", "Welcome back, " + username + "!");
 					return "Home";
 				} else {
@@ -100,6 +101,7 @@ public class PokerWalletController {
 			userService.createUser(user);
 			model.addAttribute("message", "Welcome, " + username + "!");
 			model.addAttribute("username", username);
+			model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
 			model.addAttribute("loggedIn", true);
 			return "Home";
 		}
@@ -107,9 +109,26 @@ public class PokerWalletController {
 	
 	@RequestMapping("/signout")
 	public String userSignout(@RequestParam String username, @RequestParam boolean loggedIn, Model model) {
-		model.addAttribute("loggedIn", !loggedIn);
+		model.addAttribute("loggedIn", false);
 		model.addAttribute("message", "Come back soon, " + username + "!");
 		return "Home";
+	}
+	
+	@RequestMapping("/managebankroll")
+	public String manageBankroll(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, Model model) {
+		
+		if(username != null) {
+		
+			UserResponse user = userService.findByUsername(username);
+		
+			model.addAttribute("message", "Welcome to bankroll management, " + username + "! Enter your winnings or loses below.");
+			model.addAttribute("username", username);
+			model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
+			model.addAttribute("netprofit", user.displayNetProfit(user.getNetProfit()));
+			model.addAttribute("loggedIn", true);
+		}
+		
+		return "managebankroll";
 	}
 	
 	public static String hashPassword(String password) {
