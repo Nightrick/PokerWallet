@@ -16,7 +16,7 @@ public class UserService {
 	private RestTemplate restTemplate = new RestTemplate();
 	
 	public UserResponse findByUsername(String username) {
-		String url = baseUrl + "/findByUsername";
+		String url = baseUrl + "/findByUsername/" + username;
 		UserResponse response = restTemplate.getForObject(url, UserResponse.class, username);
 		return response;
 	}

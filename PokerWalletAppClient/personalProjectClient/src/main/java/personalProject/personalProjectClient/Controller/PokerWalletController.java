@@ -20,7 +20,7 @@ public class PokerWalletController {
 	private UserService userService;
 	
 	@RequestMapping("/")
-	public String homePage(@RequestParam(required = false) String message, @RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false, defaultValue = "0") double bankroll, Model model) {
+	public String homePage(@RequestParam(required = false) String message, @RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false) String bankroll, Model model) {
 		
 		model.addAttribute("message", message);
 		model.addAttribute("username", username);
@@ -29,10 +29,10 @@ public class PokerWalletController {
 		
 		return "Home";
 	}
-	
+		
 	//Needs work
 	@RequestMapping("/login")
-	public String loginPage(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false, defaultValue = "0") double bankroll, Model model) {
+	public String loginPage(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false) String bankroll, Model model) {
 		
 		String message = "Please enter your username and password.";
 		model.addAttribute("message", message);
@@ -75,7 +75,7 @@ public class PokerWalletController {
 	
 	//Needs work
 	@RequestMapping("/signup")
-	public String signupPage(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false, defaultValue = "0") double bankroll, Model model) {
+	public String signupPage(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false) String bankroll, Model model) {
 		
 		model.addAttribute("username", username);
 		model.addAttribute("loggedIn", loggedIn);
@@ -114,15 +114,15 @@ public class PokerWalletController {
 		return "Home";
 	}
 	
-	@RequestMapping("/managebankroll")
+	@PostMapping("/managebankroll")
 	public String manageBankroll(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, Model model) {
 		
 		if(username != null) {
 		
 			UserResponse user = userService.findByUsername(username);
 		
-			model.addAttribute("message", "Welcome to bankroll management, " + username + "! Enter your winnings or loses below.");
 			model.addAttribute("username", username);
+			model.addAttribute("message", "Welcome to bankroll management, " + username + "! Enter your winnings or loses below.");
 			model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
 			model.addAttribute("netprofit", user.displayNetProfit(user.getNetProfit()));
 			model.addAttribute("loggedIn", true);

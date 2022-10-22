@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Manage Bankroll</title>
 <link rel="stylesheet" href = "/style.css" />
 </head>
 <body>
@@ -18,14 +18,7 @@
 			<a href="/login">Login</a>
   			<a href="/signup">Sign Up</a>
 		</div>
-		<h1 style="text-align: center"> Bankroll Management!</h1>
-		<div class="topnav" style="text-align: center">
-  			<a href="/">Home</a>
-  			<a href="/">Bankroll Statistics</a>
-  			<a href="/">Poker Stats</a>
-  			<a class="active" href="/managebankroll">Manage Bankroll</a>
-  			<a href="/">Refer-a-Friend</a>
-  			<a href="/">Contact Us</a>  
+		<h1 style="text-align: center"> Bankroll Management!</h1> 
   		</div>
 	</c:if>
 	<c:if test="${loggedIn}">
@@ -37,20 +30,81 @@
 			<button type="submit">Sign Out</button>
 		</form>
 		<h1 style="text-align: center"> Bankroll Management!</h1>
-		<div class="topnav" style="text-align: center">
-  			<a href="/">Home</a>
-  			<a href="/">Bankroll Statistics</a>
-  			<a href="/">Poker Stats</a>
-  			<a class="active" href="/managebankroll">Manage Bankroll</a>
-  			<a href="/">Refer-a-Friend</a>
-  			<a href="/">Contact Us</a>  
-  		</div>
 	</c:if>
    </div>
 </div>
+	<c:if test="${not loggedIn}">
+		<div class="form-inline">
+  			<form action="/" method="POST">
+				<button type="submit">Home</button>
+			</form>
+  			<form action="/managebankroll" method="POST"> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<button type="submit">Manage Bankroll</button>
+			</form>
+  			<form action="/bankrollstats" method="POST"> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<button type="submit">Bankroll Stats</button>
+			</form>
+  			<form action="/pokerstats" method="POST"> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<button type="submit">Poker Stats</button>
+			</form>
+  			<form action="/referafriend" method="POST"> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<button type="submit">Refer a Friend</button>
+			</form>
+  			<form action="/contactus" method="POST"> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<button type="submit">Contact Us</button>
+			</form>  
+  		</div>
+  		<h3 style="text-align: center">Please sign in to manage your bankroll!</h3>
+	</c:if>
+	<c:if test="${loggedIn}">
+		<div class="form-inline">
+  			<form action="/" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">Home</button>
+			</form>
+  			<form action="/managebankroll" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">Manage Bankroll</button>
+			</form>
+  			<form action="/bankrollstats" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">Bankroll Stats</button>
+			</form>
+  			<form action="/pokerstats" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">Poker Stats</button>
+			</form>
+  			<form action="/referafriend" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">Refer a Friend</button>
+			</form>
+  			<form action="/contactus" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">Contact Us</button>
+			</form>  
+  		</div>
+  		<h3 style="text-align: center">${message}</h3>
+	</c:if>
 
 <c:if test="${not loggedIn}"> 
-	<h3 style="text-align: center">Please sign in to manage your bankroll!</h3>
+	
 </c:if>
 <c:if test="${loggedIn}">
 		

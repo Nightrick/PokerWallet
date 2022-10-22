@@ -59,6 +59,21 @@ body{
 	text-align: center;
 }
 
+.form-inline {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  left: 50%;
+  margin-left: -25%;
+  position: relative;
+}
+
+.form-inline button {
+  padding: 10px 20px;
+  background-color: black;
+  border: 1px solid #ddd;
+  color: white;
+}
 
 
 

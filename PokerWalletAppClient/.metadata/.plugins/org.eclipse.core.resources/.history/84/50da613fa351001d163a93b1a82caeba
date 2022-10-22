@@ -1,0 +1,70 @@
+@charset "ISO-8859-1";
+
+body{
+	background-color: wheat;
+}
+
+.header{
+	padding: 60px;
+	text-align: center;
+	background: grey;
+	color: whitesmoke;
+	font-size: 30px;
+}
+
+.homelink{
+	text-align: center;
+}
+
+.loginButtons{
+	text-align: right;
+}
+
+.loginButtons a{
+  color: #f2f2f2;
+  padding: 8px 8px;
+  text-decoration: none;
+  font-size: 16px; 
+  background-color: black;
+  position: relative;
+  left: 30px;
+  top: 0px;
+}
+
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  color: #f2f2f2;
+  text-align: center;
+  padding: 16px 16px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: purple;
+  color: white;
+}
+
+.form{
+	text-align: center;
+}
+
+.login{
+	text-align: center;
+}
+
+.signup{
+	text-align: center;
+}
+
+.buttons {
+	style="float:left;"
+}
+
+
+
+
+
+

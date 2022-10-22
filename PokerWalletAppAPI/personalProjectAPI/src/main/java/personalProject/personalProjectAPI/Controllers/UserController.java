@@ -62,7 +62,7 @@ public class UserController {
 	
 	//C (R) UD
 	@GetMapping("/findByUsername/{username}")
-	public User findByUsername(@RequestParam String username) {
+	public User findByUsername(@PathVariable String username) {
 		return userRepo.findByUsername(username);
 	}
 	
