@@ -25,7 +25,6 @@ INDEX VERSION 1.131+C:\Users\Dj\Desktop\Personal Coding Project\PokerWallet\Poke
 1965235272.index
 3712675650.index
 1241982625.index
-3504481094.index
 2144652434.index
 3056916350.index
 2859997947.index

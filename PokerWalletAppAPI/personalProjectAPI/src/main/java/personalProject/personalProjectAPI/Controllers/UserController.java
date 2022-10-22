@@ -81,8 +81,8 @@ public class UserController {
 	}
 	
 	//CR (U) D
-	@PutMapping("/saveUser")
-	public User save(@RequestBody User user, @RequestBody String id) {
+	@PutMapping("/saveUser/{id}")
+	public User save(@RequestBody User user, @PathVariable("id") String id) {
 		user.setId(id);
 		return userRepo.save(user);
 	}
@@ -94,7 +94,7 @@ public class UserController {
 	}
 	
 	//CR (U) D
-	@PutMapping("findAndPushToUserNetProfitByUsername/{username}")
+	@PutMapping("/findAndPushToUserNetProfitByUsername/{username}")
 	public void findAndPushToUserNetProfitByUsername(@PathVariable("username") String username, @RequestBody double netProfit) {
 		userRepo.findAndPushToUserNetProfitByUsername(username, netProfit);
 	}

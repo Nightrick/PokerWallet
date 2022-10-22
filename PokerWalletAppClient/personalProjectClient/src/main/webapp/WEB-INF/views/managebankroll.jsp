@@ -107,7 +107,25 @@
 	
 </c:if>
 <c:if test="${loggedIn}">
-		
+	<h4 style="text-align: center">Your current bankroll is: ${bankroll}.</h4>
+	<form action="/managebankrollconfirmation" method="POST" class="bankrollform">
+		<input type="hidden" name="username" value="${username}" /> 
+		<input type="hidden" name="loggedIn" value="${loggedIn}" />
+		<input type="hidden" name="bankroll" value="${bankroll}" />
+	<div class="bankrollform"> 
+		<label for="bankrolladdition">Add to Base Bankroll: $</label>
+		<input type="number" step="0.01" id="toppings" name="bankrolladdition" min="0" max="1000000000" value=0.00>
+	</div><br>
+	<div class="bankrollform"> 
+		<label for="winnings">Add Winnings to Current Bankroll: $</label>
+		<input type="number" step="0.01" id="toppings" name="winnings" min="0" max="1000000000" value=0.00>
+	</div><br>
+	<div class="bankrollform"> 
+		<label for="loses">Subtract Loses from Current Bankroll: $</label>
+		<input type="number" step="0.01" id="toppings" name="loses" min="0" max="1000000000" value=0.00>
+	</div><br>
+	<button type="submit">Update Bankroll</button>
+  	</form>
 </c:if>
 
 

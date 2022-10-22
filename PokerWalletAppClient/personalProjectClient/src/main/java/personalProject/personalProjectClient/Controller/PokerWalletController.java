@@ -131,6 +131,52 @@ public class PokerWalletController {
 		return "managebankroll";
 	}
 	
+	@PostMapping("/managebankrollconfirmation")
+	public String manageBankrollConfirmation(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false) Double bankrolladdition, @RequestParam(required = false) Double winnings, @RequestParam(required = false) Double loses, Model model) {
+		
+		if(username != null) {
+		
+			UserResponse user = userService.findByUsername(username);
+			
+			double bankroll = user.getBankroll();
+			
+			
+			if(bankrolladdition > 0.00) {
+				user.setBankroll(user.getBankroll() + bankrolladdition);
+				userService.saveUser(user, user.getId());
+				String message = "You've added a " + user.displayBankroll(bankrolladdition) + " buy-in to your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ".";
+				model.addAttribute("additionmessage", message);
+			}
+			
+			if(winnings > 0.00 && bankroll > 0.00) {
+				user.setBankroll(user.getBankroll() + winnings);
+				userService.saveUser(user, user.getId());
+				String message = "You've added " + user.displayBankroll(winnings) + " profit to your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ".";
+				model.addAttribute("winningsmessage", message);
+			} else if (winnings > 0.00) {
+				String message = "Your bankroll can't account for wins and loses while it's at $0. Please enter your starting buy-in, then try again.";
+				model.addAttribute("winningsmessage", message);
+			}
+			
+			if(loses > 0.00 && bankroll > 0.00) {
+				user.setBankroll(user.getBankroll() - loses);
+				userService.saveUser(user, user.getId());
+				String message = "You've subtracted " + user.displayBankroll(loses) + " in loses from your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ".";
+				model.addAttribute("losesmessage", message);
+			} else if (loses > 0.00) {
+				String message = "Your bankroll can't account for wins and loses while it's at $0. Please enter your starting buy-in, then try again.";
+				model.addAttribute("losesmessage", message);
+			}
+			
+			model.addAttribute("username", username);
+			model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
+			model.addAttribute("netprofit", user.displayNetProfit(user.getNetProfit()));
+			model.addAttribute("loggedIn", true);
+		}
+		
+		return "managebankrollconfirmation";
+	}
+	
 	public static String hashPassword(String password) {
 		String result = "";
 		int mult = (password.length() * password.length()) % 126;
