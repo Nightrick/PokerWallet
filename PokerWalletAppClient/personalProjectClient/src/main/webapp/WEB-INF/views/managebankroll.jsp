@@ -117,6 +117,10 @@
 		<input type="number" step="0.01" id="toppings" name="bankrolladdition" min="0" max="1000000000" value=0.00>
 	</div><br>
 	<div class="bankrollform"> 
+		<label for="bankrollwithdrawal">Subtract from Base Bankroll: $</label>
+		<input type="number" step="0.01" id="toppings" name="bankrollwithdrawal" min="0" max="1000000000" value=0.00>
+	</div><br>
+	<div class="bankrollform"> 
 		<label for="winnings">Add Winnings to Current Bankroll: $</label>
 		<input type="number" step="0.01" id="toppings" name="winnings" min="0" max="1000000000" value=0.00>
 	</div><br>

@@ -101,6 +101,7 @@
 			</form>  
   		</div>
   		<h3 style="text-align: center">${additionmessage}</h3>
+  		<h3 style="text-align: center">${withdrawalmessage}</h3>
   		<h3 style="text-align: center">${winningsmessage}</h3>
   		<h3 style="text-align: center">${losesmessage}</h3>
 	</c:if>

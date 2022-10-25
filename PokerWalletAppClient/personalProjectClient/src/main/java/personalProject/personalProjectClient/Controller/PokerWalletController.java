@@ -132,7 +132,7 @@ public class PokerWalletController {
 	}
 	
 	@PostMapping("/managebankrollconfirmation")
-	public String manageBankrollConfirmation(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false) Double bankrolladdition, @RequestParam(required = false) Double winnings, @RequestParam(required = false) Double loses, Model model) {
+	public String manageBankrollConfirmation(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, @RequestParam(required = false) Double bankrolladdition, @RequestParam(required = false) Double bankrollwithdrawal, @RequestParam(required = false) Double winnings, @RequestParam(required = false) Double loses, Model model) {
 		
 		if(username != null) {
 		
@@ -140,31 +140,71 @@ public class PokerWalletController {
 			
 			double bankroll = user.getBankroll();
 			
+			if(bankrolladdition != 0.00 && bankrollwithdrawal != 0.00) {
+				String message = "Please perform one action at a time: either deposit funds or withdraw funds from your bankroll.";
+				model.addAttribute("additionmessage", message);
+				model.addAttribute("username", username);
+				model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
+				model.addAttribute("netprofit", user.displayNetProfit(user.getNetProfit()));
+				model.addAttribute("loggedIn", true);
+				return "managebankrollconfirmation";
+			}
 			
-			if(bankrolladdition > 0.00) {
+			if(winnings != 0.00 && loses != 0.00) {
+				String message = "Please perform one action at a time: either add winnings or subtract loses from your bankroll.";
+				model.addAttribute("additionmessage", message);
+				model.addAttribute("username", username);
+				model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
+				model.addAttribute("netprofit", user.displayNetProfit(user.getNetProfit()));
+				model.addAttribute("loggedIn", true);
+				return "managebankrollconfirmation";
+			}
+			
+			if(bankrolladdition > 0.00 && winnings == 0.00 && loses == 0.00 && bankrollwithdrawal == 0.00) {
 				user.setBankroll(user.getBankroll() + bankrolladdition);
 				userService.saveUser(user, user.getId());
 				String message = "You've added a " + user.displayBankroll(bankrolladdition) + " buy-in to your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ".";
 				model.addAttribute("additionmessage", message);
 			}
 			
+			if(bankrollwithdrawal > 0.00 && winnings == 0.00 && loses == 0.00 && bankrolladdition == 0.00) {
+				user.setBankroll(user.getBankroll() - bankrollwithdrawal);
+				userService.saveUser(user, user.getId());
+				String message = "You've withdrawn " + user.displayBankroll(bankrollwithdrawal) + " from your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ".";
+				model.addAttribute("withdrawalmessage", message);
+			} else if (bankrollwithdrawal > (bankroll + bankrolladdition + winnings - loses)) {
+				String message = "You can't withdraw more than the total value of your bankroll. Update your bankroll and try again.";
+				model.addAttribute("withdrawalmessage", message);
+			}
+			
 			if(winnings > 0.00 && bankroll > 0.00) {
 				user.setBankroll(user.getBankroll() + winnings);
+				user.setNetProfit(user.getNetProfit() + winnings);
 				userService.saveUser(user, user.getId());
-				String message = "You've added " + user.displayBankroll(winnings) + " profit to your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ".";
+				String message = "You've added " + user.displayBankroll(winnings) + " profit to your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ". Your net profit is: " + user.displayNetProfit(user.getNetProfit()) + ".";
+				model.addAttribute("winningsmessage", message);
+			} else if(winnings > 0.00 && (bankroll + bankrolladdition) > winnings && bankrolladdition > 0.00) {
+				user.setBankroll(user.getBankroll() + bankrolladdition + winnings);
+				user.setNetProfit(user.getNetProfit() + winnings);
+				userService.saveUser(user, user.getId());
+				String message = "You've added " + user.displayBankroll(winnings) + " profit to your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ". Your net profit is: " + user.displayNetProfit(user.getNetProfit()) + ".";
 				model.addAttribute("winningsmessage", message);
 			} else if (winnings > 0.00) {
 				String message = "Your bankroll can't account for wins and loses while it's at $0. Please enter your starting buy-in, then try again.";
 				model.addAttribute("winningsmessage", message);
 			}
 			
-			if(loses > 0.00 && bankroll > 0.00) {
-				user.setBankroll(user.getBankroll() - loses);
+			if(loses > 0.00 && (bankroll + bankrolladdition) > loses) {
+				user.setBankroll(user.getBankroll() + bankrolladdition - loses);
+				user.setNetProfit(user.getNetProfit() - loses);
 				userService.saveUser(user, user.getId());
-				String message = "You've subtracted " + user.displayBankroll(loses) + " in loses from your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ".";
+				String message = "You've subtracted " + user.displayBankroll(loses) + " in loses from your bankroll. Your bankroll now stands at: " + user.displayBankroll(user.getBankroll()) + ". Your net profit is: " + user.displayNetProfit(user.getNetProfit()) + ".";
+				model.addAttribute("losesmessage", message);
+			} else if(loses > (bankroll + bankrolladdition)) {
+				String message = "Your loses can't be greater than the total value of your bankroll. Please enter your total buy-in for the game, then try again.";
 				model.addAttribute("losesmessage", message);
 			} else if (loses > 0.00) {
-				String message = "Your bankroll can't account for wins and loses while it's at $0. Please enter your starting buy-in, then try again.";
+				String message = "Your bankroll can't account for wins and loses while it's at $0. Please enter your total buy-in, then try again.";
 				model.addAttribute("losesmessage", message);
 			}
 			
@@ -175,6 +215,42 @@ public class PokerWalletController {
 		}
 		
 		return "managebankrollconfirmation";
+	}
+	
+	@PostMapping("/bankrollstats")
+	public String bankrollStats(@RequestParam(required = false) String username, @RequestParam(required = false) boolean loggedIn, Model model) {
+		
+		if(username != null) {
+		
+			UserResponse user = userService.findByUsername(username);
+			
+			double bankroll = user.getBankroll();
+			double netProfit = user.getNetProfit();
+			
+			if(bankroll > 0.00 && netProfit > 0.00) {
+				String message = "Your total bankroll stands at " + user.displayBankroll(bankroll) + ". Your net profit stands at " + user.displayNetProfit(netProfit) + ".";
+				model.addAttribute("message", message);
+			} else if(bankroll > 0.00 && netProfit < 0.00) {
+				String message = "Your total bankroll stands at " + user.displayBankroll(bankroll) + ". Your net loses stand at " + user.displayNetProfit(netProfit) + ".";
+				model.addAttribute("message", message);
+			} else if(bankroll == 0.00 && netProfit > 0.00){
+				String message = "Your total bankroll stands at " + user.displayBankroll(bankroll) + ". Your net profit stand at " + user.displayNetProfit(netProfit) + ".";
+				model.addAttribute("message", message);
+			}else if(bankroll == 0.00 && netProfit < 0.00) {
+				String message = "Your total bankroll stands at " + user.displayBankroll(bankroll) + ". Your net loses stand at " + user.displayNetProfit(netProfit) + ".";
+				model.addAttribute("message", message);
+			} else {
+				String message = "You must deposit funds in your bankroll and play before statistics can be generated for your account!";
+				model.addAttribute("message", message);
+			}
+			
+			model.addAttribute("username", username);
+			model.addAttribute("bankroll", user.displayBankroll(user.getBankroll()));
+			model.addAttribute("netprofit", user.displayNetProfit(user.getNetProfit()));
+			model.addAttribute("loggedIn", true);
+		}
+		
+		return "bankrollstats";
 	}
 	
 	public static String hashPassword(String password) {
