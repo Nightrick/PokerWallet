@@ -36,7 +36,12 @@
 	<c:if test="${not loggedIn}">
 		<div class="form-inline">
   			<form action="/" method="POST">
+  				<input type="hidden" name="loggedIn" value="${loggedIn}" />
 				<button type="submit">Home</button>
+			</form>
+			<form action="/howtouse" method="POST">
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<button type="submit">How to Use</button>
 			</form>
   			<form action="/managebankroll" method="POST"> 
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
@@ -49,10 +54,6 @@
   			<form action="/pokerstats" method="POST"> 
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
 				<button type="submit">Poker Stats</button>
-			</form>
-  			<form action="/referafriend" method="POST"> 
-				<input type="hidden" name="loggedIn" value="${loggedIn}" />
-				<button type="submit">Refer a Friend</button>
 			</form>
   			<form action="/contactus" method="POST"> 
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
@@ -68,6 +69,12 @@
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
 				<input type="hidden" name="bankroll" value="${bankroll}" />
 				<button type="submit">Home</button>
+			</form>
+			<form action="/howtouse" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">How to Use</button>
 			</form>
   			<form action="/managebankroll" method="POST">
 				<input type="hidden" name="username" value="${username}" /> 
@@ -86,12 +93,6 @@
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
 				<input type="hidden" name="bankroll" value="${bankroll}" />
 				<button type="submit">Poker Stats</button>
-			</form>
-  			<form action="/referafriend" method="POST">
-				<input type="hidden" name="username" value="${username}" /> 
-				<input type="hidden" name="loggedIn" value="${loggedIn}" />
-				<input type="hidden" name="bankroll" value="${bankroll}" />
-				<button type="submit">Refer a Friend</button>
 			</form>
   			<form action="/contactus" method="POST">
 				<input type="hidden" name="username" value="${username}" /> 
@@ -129,6 +130,14 @@
 		<input type="number" step="0.01" id="toppings" name="loses" min="0" max="1000000000" value=0.00>
 	</div><br>
 	<button type="submit">Update Bankroll</button>
+  	</form>
+  	<br>
+  	<h3 style="text-align: center">If you'd like to start over, you can reset your bankroll and net profit to $0.00.</h3>
+  	<form action="/resetbankrollconfirmation" method="POST" class="bankrollform">
+		<input type="hidden" name="username" value="${username}" /> 
+		<input type="hidden" name="loggedIn" value="${loggedIn}" />
+		<input type="hidden" name="bankroll" value="${bankroll}" />
+		<button type="submit">Reset Bankroll</button>
   	</form>
 </c:if>
 

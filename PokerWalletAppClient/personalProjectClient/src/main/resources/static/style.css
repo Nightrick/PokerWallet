@@ -65,7 +65,7 @@ body{
   align-items: center;
   left: 50%;
   margin-left: -25%;
-  position: relative;
+  position: relative; 
 }
 
 .form-inline button {

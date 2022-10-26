@@ -37,6 +37,11 @@
 		<div class="form-inline">
   			<form action="/" method="POST">
 				<button type="submit">Home</button>
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+			</form>
+			<form action="/howtouse" method="POST">
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<button type="submit">How to Use</button>
 			</form>
   			<form action="/managebankroll" method="POST"> 
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
@@ -69,6 +74,12 @@
 				<input type="hidden" name="bankroll" value="${bankroll}" />
 				<button type="submit">Home</button>
 			</form>
+			<form action="/howtouse" method="POST">
+				<input type="hidden" name="username" value="${username}" /> 
+				<input type="hidden" name="loggedIn" value="${loggedIn}" />
+				<input type="hidden" name="bankroll" value="${bankroll}" />
+				<button type="submit">How to Use</button>
+			</form>
   			<form action="/managebankroll" method="POST">
 				<input type="hidden" name="username" value="${username}" /> 
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
@@ -86,12 +97,6 @@
 				<input type="hidden" name="loggedIn" value="${loggedIn}" />
 				<input type="hidden" name="bankroll" value="${bankroll}" />
 				<button type="submit">Poker Stats</button>
-			</form>
-  			<form action="/referafriend" method="POST">
-				<input type="hidden" name="username" value="${username}" /> 
-				<input type="hidden" name="loggedIn" value="${loggedIn}" />
-				<input type="hidden" name="bankroll" value="${bankroll}" />
-				<button type="submit">Refer a Friend</button>
 			</form>
   			<form action="/contactus" method="POST">
 				<input type="hidden" name="username" value="${username}" /> 
